@@ -19,7 +19,7 @@ public abstract class AbstractExample {
         // 创建线程池
         ExecutorService executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
-                new SynchronousQueue<>(), r -> new Thread(r,"测试线程"));
+                new SynchronousQueue<>(), (ThreadFactory) Thread::new);
         // 信号量，闭锁
         final Semaphore semaphore = new Semaphore(threadTotal);
         final CountDownLatch countDownLatch = new CountDownLatch(clientTotal);

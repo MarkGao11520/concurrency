@@ -3,14 +3,9 @@ package com.gwf.concurrency.example.syncContainer;
 import java.util.Iterator;
 import java.util.Vector;
 
-/**
- * @author gaowenfeng
- * @date
- */
 public class VectorExample3 {
 
     // java.util.ConcurrentModificationException
-    // 在遍历的同时进行了删除的操作，导致抛出了并发修改的异常
     private static void test1(Vector<Integer> v1) { // foreach
         for(Integer i : v1) {
             if (i.equals(3)) {
@@ -48,4 +43,3 @@ public class VectorExample3 {
         test1(vector);
     }
 }
-

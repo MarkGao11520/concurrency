@@ -1,49 +1,32 @@
 package com.gwf.concurrency.example.singleton;
 
-import com.gwf.concurrency.annoations.NotThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+import com.mmall.concurrency.annoations.ThreadSafe;
 
 /**
- * 懒汉模式
- * 单例的实例在第一次使用的时候进行创建
- * 双实例同步锁实现模式
- * @author gaowenfeng
- * @date
+ * 懒汉模式 -》 双重同步锁单例模式
+ * 单例实例在第一次使用时进行创建
  */
-@Slf4j
-@NotThreadSafe
+@ThreadSafe
 public class SingletonExample5 {
-    /**
-     * 私有构造函数
-     */
-    private SingletonExample5(){
-        // 可能会进行很多操作，很多运算
+
+    // 私有构造函数
+    private SingletonExample5() {
+
     }
 
-    /**
-     * 单例对象
-     */
-    private static SingletonExample5 instance = null;
+    // 1、memory = allocate() 分配对象的内存空间
+    // 2、ctorInstance() 初始化对象
+    // 3、instance = memory 设置instance指向刚分配的内存
 
-    /**
-     * 静态工厂模式
-     */
-    public static SingletonExample5 getInstance(){
-        // 双重检测机制
-        if (null == instance){
-            // 同步锁
-            synchronized (SingletonExample5.class){
-                if(null == instance){
-                    // 1、memory = allocate() 分配对象的内存空间
-                    // 2、ctorInstance() 初始化对象
-                    // 3、instance = memory 设置instance指向刚分配的内存
+    // 单例对象 volatile + 双重检测机制 -> 禁止指令重排
+    private volatile static SingletonExample5 instance = null;
 
-                    // JVM 和 cpu优化，发生了指令重拍
-
-                    // 1、memory = allocate() 分配对象的内存空间
-                    // 3、instance = memory 设置instance指向刚分配的内存
-                    // 2、ctorInstance() 初始化对象
-                    instance = new SingletonExample5();
+    // 静态的工厂方法
+    public static SingletonExample5 getInstance() {
+        if (instance == null) { // 双重检测机制        // B
+            synchronized (SingletonExample5.class) { // 同步锁
+                if (instance == null) {
+                    instance = new SingletonExample5(); // A - 3
                 }
             }
         }

@@ -6,13 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用来标示[线程不安全的类]
- * @Target(ElementType.TYPE) 说明作用于类上
- * @Retention(RetentionPolicy.SOURCE) 指定注解作用的范围，在编译的时候就会被忽略掉
- * @author gaowenfeng
+ * 课程里用来标记【线程不安全】的类或者写法
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface NotThreadSafe {
+
     String value() default "";
 }

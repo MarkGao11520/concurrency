@@ -1,31 +1,28 @@
 package com.gwf.concurrency.example.immutable;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.mmall.concurrency.annoations.ThreadSafe;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
-/**
- * @author gaowenfeng
- * @date 2018-03-23
- */
+@Slf4j
+@ThreadSafe
 public class ImmutableExample2 {
-    private final static List<Integer> list = ImmutableList.of(1,2,3);
-    private final static ImmutableSet set = ImmutableSet.copyOf(list);
-    // 奇数位参数为key，偶数位参数为value
-    private final static ImmutableMap map1 = ImmutableMap.of(1,2,3,5);
 
-    private final static ImmutableMap<Integer,Integer> map2 = ImmutableMap.<Integer,Integer>builder()
-            .put(1,2).put(3,4).build();
+    private static Map<Integer, Integer> map = Maps.newHashMap();
+
+    static {
+        map.put(1, 2);
+        map.put(3, 4);
+        map.put(5, 6);
+        map = Collections.unmodifiableMap(map);
+    }
 
     public static void main(String[] args) {
-        // 执行都会跑出 UnsupportedOperationException异常
-        // 但是使用ImmutableXXX声明会直接在编译的时候就告诉你这个方法已经被废弃
-        list.add(5);
-        set.add(6);
-        map1.put(1,2);
-        map2.put(3,4);
+        map.put(1, 3);
+        log.info("{}", map.get(1));
     }
 
 }

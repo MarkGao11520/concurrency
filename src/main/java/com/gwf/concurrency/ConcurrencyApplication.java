@@ -5,19 +5,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class ConcurrencyApplication implements WebMvcConfigurer {
+public class ConcurrencyApplication extends WebMvcConfigurerAdapter{
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(ConcurrencyApplication.class, args);
 	}
 
 	@Bean
-	public FilterRegistrationBean httpFilter(){
+	public FilterRegistrationBean httpFilter() {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		registrationBean.setFilter(new HttpFilter());
 		registrationBean.addUrlPatterns("/threadLocal/*");
@@ -26,7 +24,6 @@ public class ConcurrencyApplication implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new HttpInterceptor())
-		.addPathPatterns("/**");
+		registry.addInterceptor(new HttpInterceptor()).addPathPatterns("/**");
 	}
 }
